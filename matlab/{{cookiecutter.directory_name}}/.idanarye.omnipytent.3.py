@@ -34,6 +34,25 @@ def prepare_for_lyx(ctx):
                 first = False
             else:
                 yield ''
-            yield line.replace('\\t', '    ')
+            yield line.replace('\t', '    ')
 
-    VAR['@+'] = '\\n'.join(gen_result())
+    VAR['@+'] = '\n'.join(gen_result())
+
+
+def image_locations():
+    BASE = 'http://u.cs.biu.ac.il/~kapaho/IP/Images/'
+    import requests, re
+    pattern = re.compile(r'<a href="(.*?)">(.*?)</a>')
+    for m in pattern.finditer(requests.get(BASE).text):
+        path, name = m.groups()
+        yield dict(
+            url=BASE + path,
+            name=name)
+
+@task
+def download_images(ctx):
+    chosen = yield CHOOSE(image_locations(), fmt=lambda e: e['name'], multi=True)
+    terminal = local['bash'] & TERMINAL_PANEL
+    for image in chosen:
+        local['wget'][image['url']] & terminal
+    terminal << 'exit'
