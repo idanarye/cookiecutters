@@ -30,3 +30,4 @@ cookiecutter(str(templates_repo / template_name),
              extra_context=dict(
                  directory_name=str(new_number),
              ))
+print(new_number)

@@ -1,0 +1,4 @@
+[*.d]
+tab_width = 4
+dfmt_brace_style = otbs
+dfmt_space_after_cast = true
