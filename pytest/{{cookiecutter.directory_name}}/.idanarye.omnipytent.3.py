@@ -1,6 +1,8 @@
 from omnipytent import *
 from omnipytent.ext.idan import *
 
+pytest = local['py.test']
+
 
 @task
 def run(ctx):
