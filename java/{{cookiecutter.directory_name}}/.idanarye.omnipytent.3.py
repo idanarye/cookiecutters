@@ -5,10 +5,6 @@ from omnipytent.ext.idan import *
 gradle = local['gradle']['-q']
 
 
-def get_class_path():
-    return gradle['printClasspath']().strip() + ':build/classes/main'
-
-
 @task
 def compile(ctx):
     gradle['build'] & ERUN.bang
@@ -24,6 +20,9 @@ def test(ctx):
     gradle['test'] & BANG
 
 
-# @task
-# def debug(ctx):
-    # FN['vebugger#jdb#start']('App', {'classpath': get_class_path(), 'srcpath': 'src/main/java', 'args': []})
+@task
+def debug(ctx):
+    classpath = list(get_gradle_deps())
+    classpath.append(local.path('./build/classes/java/main/'))
+    classpath = ':'.join(map(str, classpath))
+    FN['vebugger#jdb#start']('App', {'classpath': classpath, 'srcpath': 'src/main/java', 'args': []})
