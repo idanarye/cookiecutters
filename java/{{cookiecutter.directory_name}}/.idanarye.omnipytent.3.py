@@ -24,6 +24,6 @@ def test(ctx):
     gradle['test'] & BANG
 
 
-@task
-def debug(ctx):
-    FN['vebugger#jdb#start']('App', {'classpath': get_class_path(), 'srcpath': 'src/main/java', 'args': []})
+# @task
+# def debug(ctx):
+    # FN['vebugger#jdb#start']('App', {'classpath': get_class_path(), 'srcpath': 'src/main/java', 'args': []})

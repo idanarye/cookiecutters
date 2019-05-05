@@ -1,23 +1,11 @@
 #!/bin/sh
 
-gradle init
+ORIG="`cat src/main/java/App.java`"
 
-cat >> build.gradle <<EOF
+echo | gradle init --project-name . --type java-application --dsl kotlin --test-framework junit
 
-apply plugin: 'java'
-apply plugin:'application'
-apply plugin:'eclipse'
-mainClassName = "App"
+# sed -i -e 's/rootProject.*//' settings.gradle.kts
+sed -i -e '/rootProject/d' settings.gradle.kts
 
-task printClasspath << {
-    println configurations.runtime.asPath
-}
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    compile 'org.projectlombok:lombok:1.18.2'
-}
-EOF
+echo "$ORIG" > src/main/java/App.java
+sed -i -e '/    /d' src/test/java/AppTest.java
